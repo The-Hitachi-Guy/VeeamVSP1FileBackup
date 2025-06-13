@@ -1,12 +1,3 @@
-#### SMB Share Creation Failed
-**Error**: "Failed to create SMB share"
-**Solutions**:
-- Verify the virtual server supports CIFS/SMB protocol
-- Check if the filesystem is mounted and accessible
-- Ensure sufficient permissions for share creation
-- Verify the snapshot path exists (\.snapshot\snapshot_name)# Hitachi HNAS Veeam Integration Setup Guide
-
-This guide provides instructions for setting up Python-based pre and post backup scripts for Veeam Backup & Replication with Hitachi HNAS storage using REST APIs.
 
 ## Prerequisites
 
