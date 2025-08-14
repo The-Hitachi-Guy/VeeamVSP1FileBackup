@@ -2,10 +2,10 @@
 ## Prerequisites
 
 ### Hardware/Software Requirements
-- Hitachi NAS Platform with firmware 15.4.8300 or higher (for REST API v9.4 support)
+- Hitachi VSP One File Platform with firmware 15.4.8300 or higher (for REST API v9.4 support)
 - Veeam Backup & Replication 9.5 or later
 - Python 3.6 or later installed on Veeam Backup Server
-- Network connectivity between Veeam server and HNAS management interface on port 8444 (HTTPS)
+- Network connectivity between Veeam server and Hitachi VSP One File management interface on port 8444 (HTTPS)
 
 ### Python Dependencies
 Install required Python packages on the Veeam Backup Server:
@@ -14,12 +14,12 @@ Install required Python packages on the Veeam Backup Server:
 pip install requests urllib3
 ```
 
-### HNAS Configuration
-1. Ensure REST API is enabled on your HNAS system (enabled by default on firmware 15.4.8300+)
+### Hitachi VSP One File Configuration
+1. Ensure REST API is enabled on your Hitachi VSP One File system (enabled by default on firmware 15.4.8300+)
 2. Create an API key using the CLI: `apikey-create "veeam-backup"` (recommended)
    - Alternatively, create a service account with appropriate permissions for snapshot operations
 3. Note the filesystem IDs (not labels) you want to include in snapshot-based backups
-4. Verify TCP port 8444 is accessible from the Veeam server to the HNAS management interface
+4. Verify TCP port 8444 is accessible from the Veeam server to the Hitachi VSP One File management interface
 
 ## Installation Steps
 
@@ -45,8 +45,8 @@ Create a batch file or PowerShell script to set environment variables and call t
 #### Example: `hnas_pre_backup.bat`
 ```batch
 @echo off
-REM Hitachi HNAS Configuration
-set HNAS_HOST=your-hnas-hostname-or-ip
+REM Hitachi VSP One File Configuration
+set HNAS_HOST=your-VSP_One_File-hostname-or-ip
 set HNAS_USERNAME=apikey
 set HNAS_PASSWORD=your-api-key-here
 set HNAS_FILESYSTEMS=Filesystem1,Filesystem2,Filesystem3
@@ -63,7 +63,7 @@ python C:\VeeamScripts\hnas_pre_backup.py
 #### Example: `hnas_post_backup.bat`
 ```batch
 @echo off
-REM Hitachi HNAS Configuration
+REM Hitachi VSP One File Configuration
 set HNAS_HOST=your-hnas-hostname-or-ip
 set HNAS_USERNAME=apikey
 set HNAS_PASSWORD=your-api-key-here
@@ -127,12 +127,12 @@ Configure your backup job schedule and other settings as normal.
 
 ### Credential Management
 - **Environment Variables**: Consider using encrypted credential storage instead of plain text
-- **Service Accounts**: Create dedicated HNAS service accounts with minimal required permissions
+- **Service Accounts**: Create dedicated Hitachi VSP One File service accounts with minimal required permissions
 - **Password Security**: Store passwords in Veeam credential manager or Windows Credential Store
 - **SSL/TLS**: Enable SSL verification in production environments with proper certificates
 
-### HNAS Permissions
-The HNAS user account or API key needs the following minimum permissions:
+### Hitachi VSP One File Permissions
+The Hitachi VSP One File user account or API key needs the following minimum permissions:
 - Read access to filesystem and virtual server information
 - Create/delete snapshot permissions
 - Create/delete CIFS/SMB share permissions
@@ -148,8 +148,8 @@ apikey-restrict --description veeam-backup --apikey-groups backup-ops
 ```
 
 ### Network Security
-- Ensure HNAS management interface is on a secure network
-- Use firewall rules to restrict access to HNAS from only the Veeam server
+- Ensure Hitachi VSP One File management interface is on a secure network
+- Use firewall rules to restrict access to Hitachi VSP One File from only the Veeam server
 - Consider using HTTPS with proper certificate validation
 
 ## Troubleshooting
@@ -157,17 +157,17 @@ apikey-restrict --description veeam-backup --apikey-groups backup-ops
 ### Common Issues
 
 #### Connection Problems
-**Error**: "Failed to connect to HNAS"
+**Error**: "Failed to connect to Hitachi VSP One File"
 **Solutions**:
-- Verify HNAS hostname/IP is correct and reachable
-- Check if REST API is enabled on HNAS
+- Verify Hitachi VSP One File hostname/IP is correct and reachable
+- Check if REST API is enabled on Hitachi VSP One File
 - Validate username/password credentials
-- Ensure firewall allows connections to HNAS management interface
+- Ensure firewall allows connections to Hitachi VSP One File management interface
 
 #### Authentication Failures
 **Error**: "HTTP 401 Unauthorized"
 **Solutions**:
-- Verify HNAS username and password
+- Verify Hitachi VSP One File username and password
 - Check if account is locked or expired
 - Ensure account has necessary permissions for snapshot operations
 
@@ -264,7 +264,7 @@ Consider implementing additional monitoring:
 
 ## API Reference
 
-### Key HNAS REST API Endpoints Used
+### Key Hitachi VSP One File REST API Endpoints Used
 
 #### Device Information
 ```
@@ -301,7 +301,7 @@ DELETE /v9/storage/filesystem-snapshots/{snapshotObjectId}
 
 ### Performance Considerations
 - Limit the number of concurrent snapshot operations
-- Monitor HNAS performance during backup windows
+- Monitor Hitachi VSP One File performance during backup windows
 - Consider staggering backup jobs to reduce storage load
 
 ### Snapshot Management
@@ -324,12 +324,12 @@ DELETE /v9/storage/filesystem-snapshots/{snapshotObjectId}
 ### Regular Tasks
 - Review and rotate log files
 - Monitor script execution success rates
-- Update scripts when HNAS firmware is upgraded
+- Update scripts when Hitachi VSP One File firmware is upgraded
 - Validate backup and restore procedures
 
 ### Version Compatibility
-- HNAS Platform 15.4.8300+ required for REST API v9.4
-- Test scripts with new HNAS firmware versions before upgrading
+- Hitachi VSP One File Platform 15.4.8300+ required for REST API v9.4
+- Test scripts with new Hitachi VSP One File firmware versions before upgrading
 - Monitor Hitachi documentation for API changes
 
 For additional support, consult:
